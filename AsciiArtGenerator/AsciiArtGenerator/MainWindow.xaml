@@ -5,14 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AsciiArtGenerator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow"
+        Height="450"
+        Width="800">
     <Grid>
         <DockPanel>
             <StackPanel DockPanel.Dock="Left">
-                <Button x:Name="bSelectPicture" Content="Select Picture" Click="BSelectPicture_Click"/>
-                <Button x:Name="bGenerateAscii" Content="Generate Ascii" Click="BGenerateAscii_Click"/>
+                <Button x:Name="BSelectPicture"
+                        Content="Select Picture"
+                        Click="BSelectPicture_Click" />
+                <Button x:Name="BGenerateAscii"
+                        Content="Generate Ascii"
+                        Click="BGenerateAscii_Click" />
             </StackPanel>
-            <Image x:Name="iSelectedPicture"/>
+            <Image x:Name="SelectedPicture" />
         </DockPanel>
     </Grid>
 </Window>

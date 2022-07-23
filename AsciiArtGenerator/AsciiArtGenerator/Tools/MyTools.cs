@@ -12,7 +12,7 @@ namespace AsciiArtGenerator.Tools
     {
         public static BitmapImage BytesToImage(byte[] bytes)
         {
-            using(MemoryStream memoryStream = new MemoryStream(bytes))
+            using (MemoryStream memoryStream = new MemoryStream(bytes))
             {
                 BitmapImage image = new BitmapImage();
                 image.BeginInit();
@@ -22,6 +22,7 @@ namespace AsciiArtGenerator.Tools
                 return image;
             }
         }
+
         public static BitmapImage BytesToImage(byte[] bytes, int asciiHeight, int asciiWidth)
         {
             using (MemoryStream memoryStream = new MemoryStream(bytes))
@@ -35,6 +36,14 @@ namespace AsciiArtGenerator.Tools
                 image.EndInit();
                 return image;
             }
+        }
+
+        public static string GetOpenedFilePath()
+        {
+            string[] arguments = Environment.GetCommandLineArgs();
+            string filePath = "";
+            filePath = string.Join(" ", arguments, 1, arguments.Length - 1);
+            return filePath;
         }
     }
 }

@@ -21,12 +21,17 @@ namespace AsciiArtGenerator
 {
     public partial class MainWindow : Window
     {
-        private string[] asciiChars = { "@", "%", "#", "*", "+", "=", "-", ":", ".", " " };
+        private string[] asciiChars = { "@", "%", "#", "&", "/", "*", "+", "=", "-", ":", ".", " " };
         private byte[] imageBytes;
 
         public MainWindow()
         {
             InitializeComponent();
+            var openedFile = Tools.MyTools.GetOpenedFilePath();
+            if (!string.IsNullOrWhiteSpace(openedFile))
+            {
+                SelectedPicture.Source = MyTools.BytesToImage(File.ReadAllBytes(openedFile));
+            }
         }
 
         private void BSelectPicture_Click(object sender, RoutedEventArgs e)
@@ -35,13 +40,13 @@ namespace AsciiArtGenerator
             if (dialog.ShowDialog().GetValueOrDefault())
             {
                 imageBytes = File.ReadAllBytes(dialog.FileName);
-                iSelectedPicture.Source = MyTools.BytesToImage(imageBytes);
+                SelectedPicture.Source = MyTools.BytesToImage(imageBytes);
             }
         }
 
         private void BGenerateAscii_Click(object sender, RoutedEventArgs e)
         {
-            var selectedImage = ResizeImage((BitmapImage)iSelectedPicture.Source);
+            var selectedImage = ResizeImage((BitmapImage)SelectedPicture.Source);
             var str = ConvertToAscii(selectedImage);
             var dialog = new SaveFileDialog();
             if (dialog.ShowDialog().GetValueOrDefault())
@@ -50,8 +55,9 @@ namespace AsciiArtGenerator
 
         private BitmapImage ResizeImage(BitmapImage image)
         {
-            int asciiHeight = image.PixelHeight / 4;
-            int asciiWidth = image.PixelWidth / 1;
+            // 4 1 - high resolution 4k Ultra with colors
+            int asciiHeight = image.PixelHeight / 10;
+            int asciiWidth = image.PixelWidth / 4;
             return MyTools.BytesToImage(imageBytes, asciiHeight, asciiWidth);
         }
 
@@ -74,7 +80,7 @@ namespace AsciiArtGenerator
             {
                 for (int w = 0; w < image.PixelWidth; w++)
                 {
-                    int asciiCharIndex = (pixels[currentPixel].Red * (asciiChars.Length - 1) / 255);
+                    int asciiCharIndex = pixels[currentPixel].Red * (asciiChars.Length - 1) / 255;
                     sb.Append(asciiChars[asciiCharIndex]);
                     currentPixel++;
                 }
@@ -91,5 +97,6 @@ namespace AsciiArtGenerator
             bitmapSource.CopyPixels(pixels, stride, 0);
             return pixels;
         }
+
     }
 }
